@@ -3,6 +3,7 @@ name: Datalab
 on:
   push:
     paths:
+      - ".github/workflows/datalab.yml"
       - "datalab/*"
     branches:
       - main
@@ -15,6 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-multilib
 
       - name: Test
         run: |
