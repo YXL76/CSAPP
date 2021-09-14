@@ -148,7 +148,7 @@ int bitXor(int x, int y) { return ~(x & y) & ~(~x & ~y); }
  *   Max ops: 4
  *   Rating: 1
  */
-int tmin(void) { return 2; }
+int tmin(void) { return 1 << 31; }
 // 2
 /*
  * isTmax - returns 1 if x is the maximum, two's complement number,
@@ -157,7 +157,7 @@ int tmin(void) { return 2; }
  *   Max ops: 10
  *   Rating: 1
  */
-int isTmax(int x) { return 2; }
+int isTmax(int x) { return !(((~(x + 1)) ^ x) | (!~x)); }
 /*
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   where bits are numbered from 0 (least significant) to 31 (most significant)
@@ -166,7 +166,10 @@ int isTmax(int x) { return 2; }
  *   Max ops: 12
  *   Rating: 2
  */
-int allOddBits(int x) { return 2; }
+int allOddBits(int x) {
+  int mask = (0xAA + (0xAA << 8) + (0xAA << 16) + (0xAA << 24));
+  return !((x & mask) ^ mask);
+}
 /*
  * negate - return -x
  *   Example: negate(1) = -1.
@@ -174,7 +177,7 @@ int allOddBits(int x) { return 2; }
  *   Max ops: 5
  *   Rating: 2
  */
-int negate(int x) { return 2; }
+int negate(int x) { return (~x) + 1; }
 // 3
 /*
  * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0'
@@ -184,7 +187,11 @@ int negate(int x) { return 2; }
  *   Max ops: 15
  *   Rating: 3
  */
-int isAsciiDigit(int x) { return 2; }
+int isAsciiDigit(int x) {
+  int mask1 = 0x6;
+  int mask2 = (mask1 + 1) << 2;
+  return !(x >> 6) & (!((x >> 3) ^ mask1) | !((x >> 1) ^ mask2));
+}
 /*
  * conditional - same as x ? y : z
  *   Example: conditional(2,4,5) = 4
@@ -192,7 +199,12 @@ int isAsciiDigit(int x) { return 2; }
  *   Max ops: 16
  *   Rating: 3
  */
-int conditional(int x, int y, int z) { return 2; }
+int conditional(int x, int y, int z) {
+  int c = !!x;
+  int b = (c & 1);
+  c = (~c | b) + b;
+  return (y & ~c) | (z & c);
+}
 /*
  * isLessOrEqual - if x <= y  then return 1, else return 0
  *   Example: isLessOrEqual(4,5) = 1.
@@ -210,7 +222,7 @@ int isLessOrEqual(int x, int y) { return 2; }
  *   Max ops: 12
  *   Rating: 4
  */
-int logicalNeg(int x) { return 2; }
+int logicalNeg(int x) { return x ^ 0; }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
  *  Examples: howManyBits(12) = 5
