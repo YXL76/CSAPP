@@ -2,12 +2,16 @@
 
 const { execSync } = require("child_process");
 
-if (execSync("./dlc bits.c", { cwd: "datalab" }).toString())
+const dlcRes = execSync("./dlc bits.c", { cwd: "datalab" }).toString();
+if (dlcRes) {
+    console.log(dlcRes);
     throw Error("dlc bits.c failed");
+}
 
-if (
-    execSync("make btest && ./btest", { cwd: "datalab" })
-        .toString()
-        .includes("ERROR: ")
-)
+const btestRes = execSync("make btest && ./btest", {
+    cwd: "datalab",
+}).toString();
+if (btestRes.includes("ERROR: ")) {
+    console.log(btestRes);
     throw Error("btest failed");
+}
