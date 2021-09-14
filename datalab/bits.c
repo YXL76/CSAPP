@@ -215,7 +215,8 @@ int conditional(int x, int y, int z) {
 int isLessOrEqual(int x, int y) {
   int xs = x >> 31;
   int ys = y >> 31;
-  return !(x ^ y) | !!((xs ^ ys) & xs) | !!((x + ((~y) + 1)) >> 31);
+  int mask = xs ^ ys;
+  return !(x ^ y) | !!(mask & xs) | !!(((x + ((~y) + 1)) >> 31) & ~mask);
 }
 // 4
 /*
