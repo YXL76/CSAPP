@@ -577,7 +577,7 @@ int main(int argc, char *argv[])
     }
 
     /* test each function */
-    if (run_tests()) return -1;
+    run_tests();
 
     return 0;
 }

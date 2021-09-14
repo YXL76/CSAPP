@@ -3,7 +3,7 @@ name: Datalab
 on:
   push:
     paths:
-      - ".github/workflows/datalab.yml"
+      - ".github/workflows/*"
       - "datalab/*"
     branches:
       - main
@@ -23,8 +23,4 @@ jobs:
           sudo apt-get install gcc-multilib
 
       - name: Test
-        run: |
-          cd datalab
-          ./dlc -e bits.c
-          make btest
-          ./btest
+        run: node scripts/test.js
