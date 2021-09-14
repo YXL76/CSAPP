@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/*"
       - "datalab/*"
+      - "scripts/*"
     branches:
       - main
 

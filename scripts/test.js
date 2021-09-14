@@ -8,7 +8,7 @@ if (dlcRes) {
     throw Error("dlc bits.c failed");
 }
 
-const btestRes = execSync("make btest && ./btest", {
+const btestRes = execSync("make btest && ./btest -T 100", {
     cwd: "datalab",
 }).toString();
 if (btestRes.includes("ERROR: ")) {
